@@ -85,3 +85,8 @@ function resetGame() {
 document.getElementById('guess-input').addEventListener('keydown', function(e) {
   if (e.key === 'Enter') makeGuess();
 });
+document.addEventListener('DOMContentLoaded', function() {
+  // Inicializar el texto del juego de adivinanza solo cuando el DOM esté listo
+  const box = document.getElementById('console-box');
+  if (box) box.textContent = 'Adivina el número secreto (1-100):';
+});
