@@ -82,3 +82,12 @@ function sendAnswer() {
 document.getElementById('consoleInput').addEventListener('keydown', function(e) {
   if (e.key === 'Enter') sendAnswer();
 });
+
+// Permitir reiniciar el juego desde la interfaz
+function resetGame() {
+  secretNumber = Math.floor(Math.random() * 100) + 1;
+  attempts = 0;
+  gameActive = true;
+  box.textContent = 'Guess the secret number (1-100):';
+}
+
