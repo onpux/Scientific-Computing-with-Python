@@ -51,11 +51,16 @@ function simulateFreeFall() {
 }
 
 // Juego de Adivinanza (Consola)
-let secretNumber = Math.floor(Math.random() * 100) + 1;
-let attempts = 0;
-let gameActive = true;
-const box = document.getElementById('console-box');
-box.textContent = 'Adivina el número secreto (1-100):';
+let secretNumber, attempts, gameActive, box;
+
+function initGuessGame() {
+  secretNumber = Math.floor(Math.random() * 100) + 1;
+  attempts = 0;
+  gameActive = true;
+  box = document.getElementById('console-box');
+  if (box) box.textContent = 'Adivina el número secreto (1-100):';
+}
+
 function makeGuess() {
   if (!gameActive) return;
   const input = document.getElementById('guess-input');
@@ -77,16 +82,16 @@ function makeGuess() {
   box.scrollTop = box.scrollHeight;
 }
 function resetGame() {
-  secretNumber = Math.floor(Math.random() * 100) + 1;
-  attempts = 0;
-  gameActive = true;
-  box.textContent = 'Adivina el número secreto (1-100):';
+  initGuessGame();
 }
-document.getElementById('guess-input').addEventListener('keydown', function(e) {
-  if (e.key === 'Enter') makeGuess();
-});
+
 document.addEventListener('DOMContentLoaded', function() {
   // Inicializar el texto del juego de adivinanza solo cuando el DOM esté listo
-  const box = document.getElementById('console-box');
-  if (box) box.textContent = 'Adivina el número secreto (1-100):';
+  initGuessGame();
+  const input = document.getElementById('guess-input');
+  if (input) {
+    input.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') makeGuess();
+    });
+  }
 });
