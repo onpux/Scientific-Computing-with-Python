@@ -90,9 +90,9 @@
   });
 })();
 
-// Project 2: SI Units Converter (visual, JSON demo)
+// Project 2: SI Units Converter (visual, JSON demo + interactive input)
 (function() {
-  // Demo: show a table of unit conversions
+  // Demo: show a table of unit conversions and an interactive converter
   const units = [
     {type:'Length', from:'meter', to:'kilometer', factor:0.001},
     {type:'Mass', from:'gram', to:'kilogram', factor:0.001},
@@ -100,6 +100,40 @@
     {type:'Time', from:'second', to:'minute', factor:1/60},
     {type:'Pressure', from:'pascal', to:'bar', factor:1e-5}
   ];
+  // Interactive converter UI
+  const container = d3.select('#project2').append('div').style('margin','18px 0');
+  container.append('input')
+    .attr('type','number')
+    .attr('id','unitInput')
+    .attr('placeholder','Value')
+    .style('width','90px')
+    .style('margin-right','8px')
+    .style('padding','6px')
+    .style('border-radius','6px');
+  const select = container.append('select').attr('id','unitSelect').style('margin-right','8px').style('padding','6px').style('border-radius','6px');
+  select.selectAll('option')
+    .data(units)
+    .enter().append('option')
+    .attr('value',(d,i)=>i)
+    .text(d=>`${d.from} → ${d.to}`);
+  container.append('button')
+    .text('Convert')
+    .style('padding','6px 16px')
+    .style('border-radius','6px')
+    .style('background','#ff8a80')
+    .style('color','#fff')
+    .on('click',function() {
+      const val = parseFloat(document.getElementById('unitInput').value);
+      const idx = document.getElementById('unitSelect').value;
+      if(isNaN(val)) {
+        d3.select('#unitResult').text('Please enter a value.');
+        return;
+      }
+      const u = units[idx];
+      d3.select('#unitResult').text(`${val} ${u.from} = ${(val*u.factor).toPrecision(6)} ${u.to}`);
+    });
+  container.append('span').attr('id','unitResult').style('margin-left','18px').style('color','#ffd6d6').style('font-weight','bold');
+  // Table of conversions
   const table = d3.select('#project2').append('table').style('width','100%').style('background','rgba(0,77,64,0.7)').style('color','#fff').style('border-radius','10px').style('margin','18px 0');
   const thead = table.append('thead');
   thead.append('tr').selectAll('th').data(['Type','From','To','Factor']).enter().append('th').text(d=>d).style('padding','8px').style('color','#ff8a80');
